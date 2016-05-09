@@ -6,17 +6,17 @@ using namespace std;
 class Player {
 private:
     string name;
-    string score = 0;
+    int score = 0;
+
 public:
-    Player(string name) {
-        this->name = name;
-    }
+
+    Player(const string &name) : name(name) { }
 
     const string &getName() const {
         return name;
     }
 
-    const string &getScore() const {
+    int getScore() const {
         return score;
     }
 };
@@ -52,14 +52,14 @@ public:
         cin >> playerName;
         cout << endl;
 
-        Player player(playerName);
+        Player *player = new Player(playerName);
 
-        engine = new Engine(&player);
+        engine = new Engine(player);
     }
 
     void run() {
 
-        cout << "Hrac :" << engine->getPlayer()->getName();
+       cout << "Hrac :" << engine->getPlayer()->getName();
     }
 
 };
