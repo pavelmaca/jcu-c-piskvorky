@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include "Engine.h";
+#include "InputReader.h";
+#include <stdlib.h>
 
 using namespace std;
 
@@ -14,12 +16,16 @@ class Gui {
 private:
     Engine *engine;
 
-    void printStatus(){
+    void printStatus() {
+        // clean console output
+        // source: http://stackoverflow.com/a/6487534
+        //TODO std::cout << "\x1B[2J\x1B[H";
+
         int size = engine->getStorageSize();
         printHeader(size);
 
 
-        for (int y = 0; y < size ; ++y) {
+        for (int y = 0; y < size; ++y) {
             int x = 0;
             cout << " " << y;
             for (; x < size; x++) {
@@ -27,33 +33,38 @@ private:
                 char symbol = field == NULL ? ' ' : field->getSymbol();
                 cout << '|' << symbol;
             }
-            cout << endl;
+            cout << '|' << endl;
         }
 
     }
 
-    void printHeader(int size){
-
+    void printHeader(int size) {
         int x = 0;
-        cout << "  |";
-        for (; x < size-1; x++) {
-            cout << x << '|';
+        cout << "  ";
+        for (; x < size; x++) {
+            cout << '|' << static_cast<char>('a' + x);
         }
-        cout << x+1 << endl;
+        cout << '|' << endl;
+    }
+
+    void makePlayerMove(){
+        cout << "Vas tah:";
+        int *coordinates = InputReader::readCoorinates(engine->getStorageSize());
+
+        engine->createMove(coordinates[0], coordinates[1]);
     }
 
 public:
 
     Gui() {
         int size;
-        cout << u8"Velikost hraci plochy: ";
-        cin >> size;
+        size = 5; //InputReader::readInteger();
         cout << endl;
 
 
         string playerName;
         cout << u8"Jmeno hrace: ";
-        cin >> playerName;
+        playerName = "Pavel"; //InputReader::readString();
         cout << endl;
 
         engine = new Engine(playerName, size);
@@ -61,12 +72,21 @@ public:
 
     void run() {
         printStatus();
-        cout << engine->createMove(0,0) << endl;
-        printStatus();
-        cout << engine->createMove(0,1) << endl;
-        printStatus();
-        cout <<  engine->createMove(1,0) << endl;
-        printStatus();
+
+        //while(engine->isGameOver()){
+            makePlayerMove();
+            printStatus();
+       // }
+
+        cout << "GAME OVER" << endl;
+        //engine restart
+
+        pause();
+    }
+
+    void pause(){
+
+        cin.get();
     }
 
 };

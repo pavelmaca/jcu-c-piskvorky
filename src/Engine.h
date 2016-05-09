@@ -20,6 +20,12 @@ private:
 
     Storage *storage;
     int winningSize = 5;
+
+    bool gameOver = false;
+
+    void switchPlayers(){
+        isOnMove = isOnMove == humanPlayer ? botPlayer : humanPlayer;
+    }
 public:
     Engine(string humanPlayerName, int size) {
         this->botPlayer = new Player("PC", 'o');
@@ -33,12 +39,16 @@ public:
     bool createMove(int x, int y) {
         if (storage->isEmpty(x, y)) {
             storage->put(x, y, isOnMove);
-            storage->checVictory(winningSize);
+            gameOver = storage->checVictory(winningSize); // TODO
+
+            if(!gameOver){
+                switchPlayers();
+            }
+
             return true;
         }
         return false;
     }
-
 
     int getStorageSize() const {
         return storage->getSize();
@@ -46,6 +56,11 @@ public:
 
     Player *getStatus(int x, int y){
         return storage->get(x, y);
+    }
+
+
+    bool isGameOver() const {
+        return gameOver;
     }
 };
 
