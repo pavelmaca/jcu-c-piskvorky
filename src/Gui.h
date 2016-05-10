@@ -6,8 +6,8 @@
 #define PISKVORKY_GUI_H
 
 #include <iostream>
-#include "Engine.h";
-#include "InputReader.h";
+#include "Engine.h"
+#include "InputReader.h"
 #include <stdlib.h>
 
 using namespace std;
@@ -19,11 +19,11 @@ private:
     void printStatus() {
         // clean console output
         // source: http://stackoverflow.com/a/6487534
-        //TODO std::cout << "\x1B[2J\x1B[H";
+        //std::cout << "\x1B[2J\x1B[H";
+        //system("clr");
 
         int size = engine->getStorageSize();
         printHeader(size);
-
 
         for (int y = 0; y < size; ++y) {
             int x = 0;
@@ -47,24 +47,29 @@ private:
         cout << '|' << endl;
     }
 
-    void makePlayerMove(){
+    void makePlayerMove() {
         cout << "Vas tah:";
         int *coordinates = InputReader::readCoorinates(engine->getStorageSize());
 
-        engine->createMove(coordinates[0], coordinates[1]);
+        bool result = engine->makeMove(coordinates[0], coordinates[1]);
+        if (!result && !engine->isGameOver()) {
+            cout << "Neplatny tah" << endl;
+            makePlayerMove();
+        }
     }
 
 public:
 
     Gui() {
         int size;
-        size = 5; //InputReader::readInteger();
+        cout << u8"Velikost plochy : ";
+        size = InputReader::readUnsignInteger();
         cout << endl;
 
 
         string playerName;
         cout << u8"Jmeno hrace: ";
-        playerName = "Pavel"; //InputReader::readString();
+        playerName = InputReader::readString();
         cout << endl;
 
         engine = new Engine(playerName, size);
@@ -73,20 +78,20 @@ public:
     void run() {
         printStatus();
 
-        //while(engine->isGameOver()){
+        while (!engine->isGameOver()) {
             makePlayerMove();
             printStatus();
-       // }
-
+        }
         cout << "GAME OVER" << endl;
+
         //engine restart
 
-        pause();
+       // pause();
     }
 
-    void pause(){
-
-        cin.get();
+    void pause() {
+        string t;
+        cin >> t;
     }
 
 };

@@ -22,14 +22,19 @@ public:
         }
     }
 
-    static int readInteger() {
-        // TODO nefunguje!!
+    static int readUnsignInteger() {
         try {
-            int number;
-            cin >> number;
-            return number;
+            string txt;
+            cin >> txt;
+            int number = std::stoi( txt);
+            if(number < 0) {
+                cout << "Cislo musi byt klande, zkuste znovu:";
+                return readUnsignInteger();
+            }
+            return  number;
         } catch (...) {
-            return readInteger();
+            cout << "Neplatne cislo, zkuste znovu:";
+            return readUnsignInteger();
         }
     }
 
@@ -44,7 +49,7 @@ public:
         int yInt = std::stoi(txt.substr(1,1));;
 
         if (xInt < 65 || (xInt >= 65 + size && xInt < 97) || xInt >= 97 + size || txt.length() < 2 || yInt >= size || yInt < 0) {
-            cout << "Nesprvavne souradnice";
+            cout << "Nesprvavne souradnice, zkuste znovu:";
             return readCoorinates(size);
         }
 
