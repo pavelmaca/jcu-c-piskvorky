@@ -50,7 +50,8 @@ public:
 
         this->storage = new Storage(size);
 
-        this->ai = new AI();
+        this->ai = new AI(winningSize, storage);
+        this->ai->test();
     }
 
     bool makeMove(int x, int y) {
