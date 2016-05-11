@@ -52,7 +52,7 @@ private:
         int *coordinates = InputReader::readCoorinates(engine->getStorageSize());
 
         bool result = engine->makeMove(coordinates[0], coordinates[1]);
-        if (!result && !engine->isGameOver()) {
+        if (!result) {
             cout << "Neplatny tah" << endl;
             makePlayerMove();
         }
@@ -80,8 +80,19 @@ public:
 
         while (!engine->isGameOver()) {
             makePlayerMove();
+            cout << endl;
+
             printStatus();
         }
+
+        cout << "==========" << endl;
+        Player *winner = engine->getWinner();
+        if(winner == NULL){
+            cout << "Remiza" << endl;
+        }else{
+            cout << winner->getName() << " zvitezil." << endl;
+        }
+
         cout << "GAME OVER" << endl;
 
         //engine restart

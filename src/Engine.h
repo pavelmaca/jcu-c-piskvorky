@@ -51,7 +51,7 @@ public:
 
         this->storage = new Storage(size);
 
-        this->ai = new AI(winningSize, storage);
+        this->ai = new AI(winningSize, storage, botPlayer);
     }
 
     bool makeMove(int x, int y) {
@@ -79,6 +79,10 @@ public:
 
     bool isGameOver() const {
         return gameOver;
+    }
+
+    Player* getWinner() const {
+        return isOnMove;
     }
 };
 

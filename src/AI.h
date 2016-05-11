@@ -17,6 +17,8 @@ class AI {
     int blocksNumber = 0;
     CoordinatesBlock **blocks;
 
+    Player *aiPlayer;
+
     /** našte např. všechny pětice (pokud hraji na 5) */
     void generateBlocks() {
         int leftOver = winningSize - 1;
@@ -98,48 +100,47 @@ class AI {
 
         for (int i = 0; i < blocksNumber; ++i) {
             if (blocks[i]->contains(x, y)) {
-                // 0 = defend, 1 = attack
-                int val = countValueOfBlock(blocks[i]);
-                if (val == winningSize-1) {
-                    val += 1000;
-                } else if (val == winningSize) {
-                    val += 10000;
-                }
-                pointsTotal += val;
+                pointsTotal += blocks[i]->value;
             }
         }
 
         return pointsTotal;
     }
 
-    int countValueOfBlock(CoordinatesBlock *block) {
+    void updateBlockValues(){
+        for (int i = 0; i < blocksNumber; ++i) {
+            countValueOfBlock(blocks[i]);
+        }
+    }
+
+    void countValueOfBlock(CoordinatesBlock *block) {
         int points = 0;
         Coordinates **coordinates = block->getCoordinates();
 
         Player *ownerOfBlock = NULL;
         for (int i = 0; i < winningSize; ++i) {
             Player *actualOwner = storage->get(coordinates[i]->getX(), coordinates[i]->getY());
-            if(actualOwner != NULL){
-                if(ownerOfBlock == NULL)
+            if (actualOwner != NULL) {
+                if (ownerOfBlock == NULL)
                     ownerOfBlock = actualOwner;
-                else if(ownerOfBlock != actualOwner)
-                    return 0;
+                else if (ownerOfBlock != actualOwner) {
+                    block->value = 0;
+                    return;
+                    //   return 0;
+                }
 
                 points++;
             }
-/*
-            if (ownerOfBlock == NULL ) {
-                ownerOfBlock = actualOwner;
-            } else if (actualOwner != NULL && ownerOfBlock != actualOwner) {
-                return 0; // nelze zde již vyhrát ani porhrát, hráli zde oba hráči
-            }
-
-            if (ownerOfBlock != NULL) {
-                points++;
-            }*/
         }
 
-        return points + 1;
+        if (points == winningSize-2 && ownerOfBlock == aiPlayer) {
+            points += 2;
+        } else if (points == winningSize-1) {
+            points += 1000;
+        }
+
+        block->value = points + 1;
+        //return points + 1;
     }
 
     void printBlocks() {
@@ -150,13 +151,14 @@ class AI {
 
 
 public:
-    AI(int winningSize, Storage *storage) {
+    AI(int winningSize, Storage *storage, Player *player) {
         this->winningSize = winningSize;
         this->storage = storage;
+        this->aiPlayer = player;
         generateBlocks();
-       /* printBlocks();
-        string a;
-        cin >> a;*/
+        /* printBlocks();
+         string a;
+         cin >> a;*/
     }
 
     int *getNextMove(Storage *storage) {
@@ -172,27 +174,29 @@ public:
     }
 
     Coordinates *findBestCoordinates() {
+        updateBlockValues();
+
         int max = 0;
-        Coordinates *maxCoordinates =  NULL;
-       // cout << "hodnoty:" << endl;
+        Coordinates *maxCoordinates = NULL;
+        // cout << "hodnoty:" << endl;
         for (int y = 0; y < storage->getSize(); ++y) {
             for (int x = 0; x < storage->getSize(); ++x) {
-                if(!storage->isEmpty(x,y)){
-                    //cout << " |";
+                if (!storage->isEmpty(x, y)) {
+                 //   cout << " |";
                     continue;
                 }
 
                 int val = getValueOnCoordinates(x, y);
-               // cout << val <<"|";
+               //  cout << val <<"|";
                 if (val > max) {
                     max = val;
                     delete maxCoordinates;
                     maxCoordinates = new Coordinates(x, y);
                 }
             }
-          //  cout << endl;
+             // cout << endl;
         }
-       // cout << endl;
+        // cout << endl;
 
         return maxCoordinates;
     }

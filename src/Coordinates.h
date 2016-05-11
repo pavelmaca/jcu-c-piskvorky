@@ -32,6 +32,7 @@ private:
     int i = 0;
     int size;
 public:
+    int value;
 
     CoordinatesBlock(int size) {
         pCoordinates = new Coordinates *[size];
