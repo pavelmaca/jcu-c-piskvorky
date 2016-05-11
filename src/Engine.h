@@ -21,7 +21,7 @@ private:
     AI *ai;
 
     Storage *storage;
-    int winningSize = 3;
+    int winningSize = 5;
 
     bool gameOver = false;
 
@@ -35,8 +35,9 @@ private:
     }
 
     void makeMoveAsBotPlayer(){
-        int *coordinates = ai->getNextMove(storage);
-        makeMove(coordinates[0], coordinates[1]);
+        Coordinates *coordinates = ai->findBestCoordinates();
+        cout << "PC tah: " << static_cast<char>('a' + coordinates->getX()) << coordinates->getY() << endl;
+        makeMove(coordinates->getX(), coordinates->getY());
 
         delete[] coordinates;
     }
@@ -51,7 +52,6 @@ public:
         this->storage = new Storage(size);
 
         this->ai = new AI(winningSize, storage);
-        this->ai->test();
     }
 
     bool makeMove(int x, int y) {

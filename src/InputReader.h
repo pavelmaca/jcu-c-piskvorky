@@ -55,7 +55,7 @@ public:
 
         coordinates[0] = xInt >= 97 ? xInt - 97 : xInt - 65;
         coordinates[1] = yInt;
-        cout << "souradnice: " << coordinates[0] << ":" << coordinates[1] << endl;
+        //cout << "souradnice: " << coordinates[0] << ":" << coordinates[1] << endl;
 /*
         cout << ((int) x) - 65 << endl;
         cout << ((int) 'A') - 65 << endl
