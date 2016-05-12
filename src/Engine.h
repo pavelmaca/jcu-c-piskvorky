@@ -21,7 +21,7 @@ private:
     AI *ai;
 
     Storage *storage;
-    int winningSize = 5;
+    int winningSize;
 
     bool gameOver = false;
 
@@ -36,15 +36,15 @@ private:
 
     void makeMoveAsBotPlayer(){
         Coordinates *coordinates = ai->findBestCoordinates();
-       // Coordinates *coordinates = ai->findDumCoordinates();
-        cout << "PC tah: " << static_cast<char>('a' + coordinates->getX()) << coordinates->getY() << endl;
+        cout << isOnMove->getName() <<" tah: " << static_cast<char>('a' + coordinates->getX()) << coordinates->getY() << endl;
         makeMove(coordinates->getX(), coordinates->getY());
 
         delete[] coordinates;
     }
 
 public:
-    Engine(string humanPlayerName, int size) {
+    Engine(string humanPlayerName, int size, int winningSize) {
+        this->winningSize = winningSize;
         this->botPlayer = new Player("PC", 'o');
 
         this->humanPlayer = new Player(humanPlayerName, 'x');
@@ -52,13 +52,21 @@ public:
 
         this->storage = new Storage(size);
 
-        this->ai = new AI(winningSize, storage, botPlayer);
+        this->ai = new AI(winningSize, storage);
     }
 
+    void testBot2Move(){
+        makeMoveAsBotPlayer();
+    }
     bool makeMove(int x, int y) {
         if (!gameOver && storage->isEmpty(x, y)) {
             storage->put(x, y, isOnMove);
-            gameOver = storage->checVictory(x, y, winningSize); // TODO
+            gameOver = ai->checkVictory();
+
+            if( storage->isFull()){
+                isOnMove = NULL;
+                gameOver = true;
+            }
 
             if (!gameOver) {
                 switchPlayers();

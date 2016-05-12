@@ -9,6 +9,7 @@
 #include "Engine.h"
 #include "InputReader.h"
 #include <stdlib.h>
+#include <random>
 
 using namespace std;
 
@@ -49,62 +50,87 @@ private:
 
     void makePlayerMove() {
         cout << "Vas tah:";
-        int *coordinates = InputReader::readCoorinates(engine->getStorageSize());
+        Coordinates *coordinates = InputReader::readCoorinates(engine->getStorageSize());
 
-        bool result = engine->makeMove(coordinates[0], coordinates[1]);
+        bool result = engine->makeMove(coordinates->getX(), coordinates->getY());
+        delete coordinates;
         if (!result) {
-            cout << "Neplatny tah" << endl;
+            cout << "Neplatný tah, zkuste znovu." << endl;
             makePlayerMove();
         }
+    }
+
+    void printEndGame() {
+        cout << "==========" << endl;
+        Player *winner = engine->getWinner();
+        if (winner == NULL) {
+            cout << "Remíza" << endl;
+        } else {
+            cout << winner->getName() << " zvítězil." << endl;
+        }
+
+        cout << "KONEC HRY" << endl;
+
+        //engine restart
     }
 
 public:
 
     Gui() {
+        setlocale(LC_ALL, "cs_CZ.UTF-8");
+
+        int winningSize;
+        cout << "Výherní počet: ";
+        winningSize = InputReader::readUnsignInteger();
+        cout << endl;
+
         int size;
-        cout << u8"Velikost plochy : ";
+        cout << "Velikost hrací plochy: ";
         size = InputReader::readUnsignInteger();
         cout << endl;
 
 
         string playerName;
-        cout << u8"Jmeno hrace: ";
+        cout << "Jméno hráče: ";
         playerName = InputReader::readString();
         cout << endl;
 
-        engine = new Engine(playerName, size);
+        engine = new Engine(playerName, size, winningSize);
+    }
+
+    void runTest() {
+        // http://stackoverflow.com/a/7560564
+      /*  std::random_device rd; // obtain a random number from hardware
+        std::mt19937 eng(rd()); // seed the generator
+        std::uniform_int_distribution<> distr(0, engine->getStorageSize() - 1); // define the range
+
+        int x = distr(eng);
+        int y = distr(eng);
+        cout << "souradnice: " << x << ":" << y << endl;
+      */
+        engine->testBot2Move();
+
+        while (!engine->isGameOver()) {
+            engine->testBot2Move();
+        }
+
+        printStatus();
+        printEndGame();
     }
 
     void run() {
         printStatus();
 
-        while (!engine->isGameOver()) {
-            makePlayerMove();
-            cout << endl;
 
+        while (!engine->isGameOver()) {
+            system("clear");
+
+            makePlayerMove();
             printStatus();
         }
 
-        cout << "==========" << endl;
-        Player *winner = engine->getWinner();
-        if(winner == NULL){
-            cout << "Remiza" << endl;
-        }else{
-            cout << winner->getName() << " zvitezil." << endl;
-        }
-
-        cout << "GAME OVER" << endl;
-
-        //engine restart
-
-       // pause();
+        printEndGame();
     }
-
-    void pause() {
-        string t;
-        cin >> t;
-    }
-
 };
 
 
