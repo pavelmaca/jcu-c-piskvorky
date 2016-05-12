@@ -9,6 +9,8 @@
 #include <iostream>
 #include "Storage.h"
 #include "Coordinates.h"
+#include <random>
+
 
 class WinException : public exception {
 
@@ -179,7 +181,9 @@ public:
         bool debug = false;
 
         int max = -1;
-        Coordinates *maxCoordinates = NULL;
+        int maxCount = 0;
+        int maxCountLimit = 100;
+        Coordinates **maxCoordinates = new Coordinates*[maxCountLimit];
         if (debug) cout << "hodnoty:" << endl;
         for (int y = 0; y < storage->getSize(); ++y) {
             for (int x = 0; x < storage->getSize(); ++x) {
@@ -192,15 +196,26 @@ public:
                 if (debug) cout << val << "|";
                 if (val > max) {
                     max = val;
-                    delete maxCoordinates;
-                    maxCoordinates = new Coordinates(x, y);
+                    //delete maxCoordinates;
+                    maxCount = 0;
+                    maxCoordinates[maxCount++] = new Coordinates(x, y);
+                }else if(val == max && maxCount < maxCountLimit){
+                    maxCoordinates[maxCount++] = new Coordinates(x, y);
                 }
             }
             if (debug) cout << endl;
         }
         if (debug) cout << endl;
 
-        return maxCoordinates;
+        std::random_device rd; // obtain a random number from hardware
+        std::mt19937 eng(rd()); // seed the generator
+        std::uniform_int_distribution<> distr(0, maxCount - 1); // define the range
+
+        int random = distr(eng);
+
+        Coordinates *result = new Coordinates(maxCoordinates[random]->getX(), maxCoordinates[random]->getY());
+        delete[] maxCoordinates;
+        return result;
     }
 
     ~AI(){
