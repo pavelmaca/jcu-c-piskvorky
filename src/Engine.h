@@ -36,6 +36,7 @@ private:
 
     void makeMoveAsBotPlayer(){
         Coordinates *coordinates = ai->findBestCoordinates();
+       // Coordinates *coordinates = ai->findDumCoordinates();
         cout << "PC tah: " << static_cast<char>('a' + coordinates->getX()) << coordinates->getY() << endl;
         makeMove(coordinates->getX(), coordinates->getY());
 

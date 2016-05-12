@@ -169,16 +169,16 @@ public:
          cin >> a;*/
     }
 
-    int *getNextMove(Storage *storage) {
+    Coordinates *findDumCoordinates() {
         for (int x = 0; x < storage->getSize(); ++x) {
             for (int y = 0; y < storage->getSize(); ++y) {
                 if (storage->isEmpty(x, y)) {
-                    return new int[2]{x, y};
+                    return new Coordinates(x,y);
                 }
             }
         }
 
-        //return new int[2]{0,0};
+        return NULL;
     }
 
     Coordinates *findBestCoordinates() {
