@@ -107,7 +107,7 @@ class AI {
         return pointsTotal;
     }
 
-    void updateBlockValues(){
+    void updateBlockValues() {
         for (int i = 0; i < blocksNumber; ++i) {
             countValueOfBlock(blocks[i]);
         }
@@ -116,6 +116,8 @@ class AI {
     void countValueOfBlock(CoordinatesBlock *block) {
         int points = 0;
         Coordinates **coordinates = block->getCoordinates();
+
+        bool layout[winningSize];
 
         Player *ownerOfBlock = NULL;
         for (int i = 0; i < winningSize; ++i) {
@@ -129,13 +131,19 @@ class AI {
                     //   return 0;
                 }
 
+                layout[i] = true;
+
                 points++;
+            } else {
+                layout[i] = false;
             }
         }
 
-        if (points == winningSize-2 && ownerOfBlock == aiPlayer) {
-            points += 2;
-        } else if (points == winningSize-1) {
+        if (points == winningSize - 2 /*&& ownerOfBlock == aiPlayer*/) {
+            if (!layout[0] && !layout[winningSize - 1]) {
+                points += 100;
+            }
+        } else if (points == winningSize - 1) {
             points += 1000;
         }
 
@@ -176,27 +184,29 @@ public:
     Coordinates *findBestCoordinates() {
         updateBlockValues();
 
+        bool debug = true;
+
         int max = 0;
         Coordinates *maxCoordinates = NULL;
-        // cout << "hodnoty:" << endl;
+        if (debug) cout << "hodnoty:" << endl;
         for (int y = 0; y < storage->getSize(); ++y) {
             for (int x = 0; x < storage->getSize(); ++x) {
                 if (!storage->isEmpty(x, y)) {
-                 //   cout << " |";
+                    if (debug) cout << " |";
                     continue;
                 }
 
                 int val = getValueOnCoordinates(x, y);
-               //  cout << val <<"|";
+                if (debug) cout << val << "|";
                 if (val > max) {
                     max = val;
                     delete maxCoordinates;
                     maxCoordinates = new Coordinates(x, y);
                 }
             }
-             // cout << endl;
+            if (debug) cout << endl;
         }
-        // cout << endl;
+        if (debug) cout << endl;
 
         return maxCoordinates;
     }

@@ -42,7 +42,7 @@ public:
     void add(int x, int y) {
         if (i < size) {
             pCoordinates[i++] = new Coordinates(x, y);
-        }else throw out_of_range("no more space left on coordinates block");
+        }else throw exception();
     }
 
     void print(){
