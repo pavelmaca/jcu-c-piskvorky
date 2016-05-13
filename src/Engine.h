@@ -56,6 +56,7 @@ public:
     }
 
     void testBot2Move(){
+        ai->checkVictory();
         makeMoveAsBotPlayer();
     }
     bool makeMove(int x, int y) {
