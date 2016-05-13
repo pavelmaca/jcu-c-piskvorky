@@ -232,9 +232,9 @@ public:
     ~AI() {
         cout << "Call AI destructor" << endl;
 
-        /* for (int i = 0; i < blocksNumber; ++i) {
-             delete[] blocks;
-         }***/
+         for (int i = 0; i < blocksNumber; ++i) {
+             delete[] blocks[i];
+         }
     }
 };
 

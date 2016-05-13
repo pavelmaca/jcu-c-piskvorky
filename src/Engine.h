@@ -23,7 +23,6 @@ private:
     AI *ai;
 
     Storage *storage;
-    int winningSize;
 
     bool gameOver = false;
 
@@ -36,18 +35,18 @@ private:
         }
     }
 
-    void makeMoveAsBotPlayer(){
+    void makeMoveAsBotPlayer() {
         Coordinates *coordinates = ai->findBestCoordinates();
 
-		cout << isOnMove->getName() << " tah: " << static_cast<char>('a' + coordinates->getX()) << coordinates->getY() << endl;
+        cout << isOnMove->getName() << " tah: " << static_cast<char>('a' + coordinates->getX()) <<
+        coordinates->getY() << endl;
         makeMove(coordinates->getX(), coordinates->getY());
 
-        delete[] coordinates;
+        delete coordinates;
     }
 
 public:
     Engine(string humanPlayerName, int size, int winningSize) {
-        this->winningSize = winningSize;
         this->botPlayer = new Player("PC", 'o');
 
         this->humanPlayer = new Player(humanPlayerName, 'x');
@@ -58,16 +57,32 @@ public:
         this->ai = new AI(winningSize, storage);
     }
 
-    void testBot2Move(){
+    ~Engine() {
+        cout << "destructing engine" << endl;
+        delete humanPlayer;
+        delete botPlayer;
+        delete isOnMove;
+        delete ai;
+        storage->~Storage();
+    }
+
+    void restart(){
+        this->isOnMove = this->humanPlayer;
+        this->storage->clean();
+        gameOver = false;
+    }
+
+    void testBot2Move() {
         ai->checkVictory();
         makeMoveAsBotPlayer();
     }
+
     bool makeMove(int x, int y) {
         if (!gameOver && storage->isEmpty(x, y)) {
             storage->put(x, y, isOnMove);
             gameOver = ai->checkVictory();
 
-            if( storage->isFull()){
+            if (storage->isFull()) {
                 isOnMove = NULL;
                 gameOver = true;
             }
@@ -94,7 +109,7 @@ public:
         return gameOver;
     }
 
-    Player* getWinner() const {
+    Player *getWinner() const {
         return isOnMove;
     }
 };

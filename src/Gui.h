@@ -20,8 +20,8 @@ private:
     void printStatus() {
         // clean console output
         // source: http://stackoverflow.com/a/6487534
-        //std::cout << "\x1B[2J\x1B[H";
-        //system("clr");
+        cout << "\x1B[2J\x1B[H";
+        system("clr");
 
         int size = engine->getStorageSize();
         printHeader(size);
@@ -114,11 +114,13 @@ public:
 
         printStatus();
         printEndGame();
+
+        engine->restart();
+        run();
     }
 
     void run() {
         printStatus();
-
 
         while (!engine->isGameOver()) {
             system("clear");
@@ -128,6 +130,11 @@ public:
         }
 
         printEndGame();
+    }
+
+    ~Gui() {
+        cout << "destructing gui" << endl;
+        delete(engine);
     }
 };
 

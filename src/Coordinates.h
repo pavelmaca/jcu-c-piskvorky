@@ -24,6 +24,11 @@ public:
     int getY() const {
         return y;
     }
+
+
+    ~Coordinates() {
+        cout << "deleting coordinates" << endl;
+    }
 };
 
 class CoordinatesBlock {
@@ -37,6 +42,14 @@ public:
     CoordinatesBlock(int size) {
         pCoordinates = new Coordinates *[size];
         this->size = size;
+    }
+
+    ~CoordinatesBlock() {
+        for (int j = 0; j < i; ++j) {
+            delete pCoordinates[i];
+        }
+
+        delete pCoordinates;
     }
 
     void add(int x, int y) {

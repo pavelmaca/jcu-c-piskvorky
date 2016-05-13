@@ -29,8 +29,15 @@ public:
         }
     }
 
-    virtual ~Storage() {
+    ~Storage() {
         cout << "Storage destructor called" << endl;
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                delete fields[i][j];
+            }
+            delete fields[i];
+        }
+        delete fields;
     }
 
     bool isEmpty(int x, int y) {
@@ -56,6 +63,14 @@ public:
             }
         }
         return true;
+    }
+
+    void clean(){
+        for (int x = 0; x < size; ++x) {
+            for (int y = 0; y < size; ++y) {
+                fields[x][y] = NULL;
+            }
+        }
     }
 };
 
