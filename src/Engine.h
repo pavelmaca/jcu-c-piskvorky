@@ -66,7 +66,7 @@ public:
         storage->~Storage();
     }
 
-    void restart(){
+    void restart() {
         this->isOnMove = this->humanPlayer;
         this->storage->clean();
         gameOver = false;

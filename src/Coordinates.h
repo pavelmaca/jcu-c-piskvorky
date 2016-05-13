@@ -5,6 +5,9 @@
 #ifndef PISKVORKY_COORDINATES_H
 #define PISKVORKY_COORDINATES_H
 
+#include <iostream>
+
+using namespace std;
 
 class Coordinates {
 private:
@@ -16,7 +19,6 @@ public:
         this->y = y;
     }
 
-
     int getX() const {
         return x;
     }
@@ -25,59 +27,9 @@ public:
         return y;
     }
 
-
     ~Coordinates() {
         cout << "deleting coordinates" << endl;
     }
-};
-
-class CoordinatesBlock {
-private:
-    Coordinates **pCoordinates;
-    int i = 0;
-    int size;
-public:
-    int value;
-
-    CoordinatesBlock(int size) {
-        pCoordinates = new Coordinates *[size];
-        this->size = size;
-    }
-
-    ~CoordinatesBlock() {
-        for (int j = 0; j < i; ++j) {
-            delete pCoordinates[i];
-        }
-
-        delete pCoordinates;
-    }
-
-    void add(int x, int y) {
-        if (i < size) {
-            pCoordinates[i++] = new Coordinates(x, y);
-        }else throw exception();
-    }
-
-    void print(){
-        for (int j = 0; j < i; ++j) {
-            cout << pCoordinates[j]->getX() << ":" << pCoordinates[j]->getY() << endl;
-        }
-        cout << "---" << endl;
-    }
-
-    bool contains(int x, int y){
-        for (int j = 0; j < i; ++j) {
-            if(pCoordinates[j]->getX() == x && pCoordinates[j]->getY() == y){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    Coordinates** getCoordinates(){
-        return pCoordinates;
-    }
-
 };
 
 #endif //PISKVORKY_COORDINATES_H

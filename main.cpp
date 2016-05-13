@@ -1,6 +1,5 @@
-#include <iostream>
 #include "src/Gui.h"
-#include <string>
+#include <iostream>
 
 int main() {
     Gui gui;

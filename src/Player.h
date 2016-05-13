@@ -12,7 +12,6 @@ using namespace std;
 class Player {
 private:
     string name;
-    int score = 0;
     char symbol;
 
 public:
@@ -27,11 +26,6 @@ public:
     string getName() const {
         return name;
     }
-
-    int getScore() const {
-        return score;
-    }
-
 
     char getSymbol() const {
         return symbol;
