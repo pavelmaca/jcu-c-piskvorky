@@ -3,5 +3,6 @@
 
 int main() {
     Gui gui;
-    gui.run();
+    gui.runTest();
+    //gui.run();
 }
