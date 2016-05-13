@@ -5,6 +5,8 @@
 #ifndef PISKVORKY_ENGINE_H
 #define PISKVORKY_ENGINE_H
 
+#include <string>
+#include <iostream>
 #include <iostream>
 #include "Player.h"
 #include "Storage.h"
@@ -36,7 +38,8 @@ private:
 
     void makeMoveAsBotPlayer(){
         Coordinates *coordinates = ai->findBestCoordinates();
-        cout << isOnMove->getName() <<" tah: " << static_cast<char>('a' + coordinates->getX()) << coordinates->getY() << endl;
+
+		cout << isOnMove->getName() << " tah: " << static_cast<char>('a' + coordinates->getX()) << coordinates->getY() << endl;
         makeMove(coordinates->getX(), coordinates->getY());
 
         delete[] coordinates;

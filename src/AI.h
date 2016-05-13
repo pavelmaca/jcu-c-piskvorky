@@ -116,7 +116,7 @@ class AI {
         int points = 0;
         Coordinates **coordinates = block->getCoordinates();
 
-        bool layout[winningSize];
+        bool *layout = new bool[winningSize];
 
         Player *ownerOfBlock = NULL;
         for (int i = 0; i < winningSize; ++i) {
@@ -144,10 +144,12 @@ class AI {
         } else if (points == winningSize - 1) {
             points += 1000;
         } else if (points == winningSize) {
+			delete[] layout;
             throw WinException();
         }
 
         block->value = points + 1;
+		delete[] layout;
     }
 
     void updateBlockValues() {
@@ -179,7 +181,7 @@ public:
     bool checkVictory() {
         try {
             updateBlockValues();
-        } catch (WinException &e) {
+        } catch (WinException e) {
             return true;
         }
         return false;

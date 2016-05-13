@@ -6,6 +6,7 @@
 #define PISKVORKY_INPUTREADER_H
 
 #include <iostream>
+#include <string>
 
 using namespace std;
 
