@@ -10,6 +10,7 @@
 #include "Storage.h"
 #include "Coordinates.h"
 #include <random>
+#include <ctime>
 
 
 class WinException : public exception {
@@ -23,6 +24,8 @@ class AI {
 
     int blocksNumber = 0;
     CoordinatesBlock **blocks;
+
+    std::random_device randomDevice; // obtain a random number from hardware
 
     /** našte např. všechny pětice (pokud hraji na 5) */
     void generateBlocks() {
@@ -94,14 +97,19 @@ class AI {
 
     int getValueOnCoordinates(int x, int y) {
         int pointsTotal = 0;
+        int critical = 0; // zajisti navýšení prioroty na rozcesti mezi ohraničími n-1 ticemi (štepánův tah)
 
         for (int i = 0; i < blocksNumber; ++i) {
             if (blocks[i]->contains(x, y)) {
-                pointsTotal += blocks[i]->value;
+                int points = blocks[i]->value;
+                pointsTotal += points;
+                if (points == winningSize - 1) {
+                    critical++;
+                }
             }
         }
 
-        return pointsTotal;
+        return critical > 1 ? pointsTotal + 1000 : pointsTotal;
     }
 
     void countValueOfBlock(CoordinatesBlock *block) {
@@ -135,7 +143,7 @@ class AI {
             }
         } else if (points == winningSize - 1) {
             points += 1000;
-        } else if(points == winningSize){
+        } else if (points == winningSize) {
             throw WinException();
         }
 
@@ -178,12 +186,12 @@ public:
     }
 
     Coordinates *findBestCoordinates() {
-        bool debug = false;
+        bool debug = true;
 
         int max = -1;
-        int maxCount = 0;
+        int maxCount = -1;
         int maxCountLimit = 100;
-        Coordinates **maxCoordinates = new Coordinates*[maxCountLimit];
+        Coordinates **maxCoordinates = new Coordinates *[maxCountLimit];
         if (debug) cout << "hodnoty:" << endl;
         for (int y = 0; y < storage->getSize(); ++y) {
             for (int x = 0; x < storage->getSize(); ++x) {
@@ -199,7 +207,7 @@ public:
                     //delete maxCoordinates;
                     maxCount = 0;
                     maxCoordinates[maxCount++] = new Coordinates(x, y);
-                }else if(val == max && maxCount < maxCountLimit){
+                } else if (val == max && maxCount < maxCountLimit) {
                     maxCoordinates[maxCount++] = new Coordinates(x, y);
                 }
             }
@@ -211,19 +219,20 @@ public:
         std::mt19937 eng(rd()); // seed the generator
         std::uniform_int_distribution<> distr(0, maxCount - 1); // define the range
 
-        int random = distr(eng);
+
+        int random = 0 + ((rand() + std::time(0)) % (int)((maxCount - 1) - 0 + 1));
 
         Coordinates *result = new Coordinates(maxCoordinates[random]->getX(), maxCoordinates[random]->getY());
         delete[] maxCoordinates;
         return result;
     }
 
-    ~AI(){
+    ~AI() {
         cout << "Call AI destructor" << endl;
 
-       /* for (int i = 0; i < blocksNumber; ++i) {
-            delete[] blocks;
-        }***/
+        /* for (int i = 0; i < blocksNumber; ++i) {
+             delete[] blocks;
+         }***/
     }
 };
 
