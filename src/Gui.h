@@ -28,7 +28,7 @@ private:
 
         for (int y = 0; y < size; ++y) {
             int x = 0;
-            cout << " " << y;
+            cout << " " << (y <= 9 ? " " : "") << y;
             for (; x < size; x++) {
                 Player *field = engine->getStatus(x, y);
                 char symbol = field == NULL ? ' ' : field->getSymbol();
@@ -41,7 +41,7 @@ private:
 
     void printHeader(int size) {
         int x = 0;
-        cout << "  ";
+        cout << "   ";
         for (; x < size; x++) {
             cout << '|' << static_cast<char>('a' + x);
         }
@@ -89,7 +89,6 @@ public:
         size = InputReader::readUnsignInteger();
         cout << endl;
 
-
         string playerName;
         cout << "Jméno hráče: ";
         playerName = InputReader::readString();
@@ -108,7 +107,6 @@ public:
         int y = distr(eng);
         cout << "souradnice: " << x << ":" << y << endl;
       */
-        engine->testBot2Move();
 
         while (!engine->isGameOver()) {
             engine->testBot2Move();
