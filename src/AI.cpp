@@ -197,7 +197,7 @@ Coordinates *AI::findBestCoordinates() {
     }
     if (debug) cout << endl;
 
-    int random = 0 + ((rand() + std::time(0)) % ((maxCount - 1) - 0 + 1));
+    int random = (time(0) + rand()) % maxCount;
 
     Coordinates *result = new Coordinates(maxCoordinates[random]->getX(), maxCoordinates[random]->getY());
     delete[] maxCoordinates;
