@@ -6,10 +6,11 @@
 #define PISKVORKY_COORDINATES_H
 
 #include <iostream>
+#include "Object.h"
 
 using namespace std;
 
-class Coordinates {
+class Coordinates : public Object{
 private:
     int x;
     int y;
@@ -25,10 +26,6 @@ public:
 
     int getY() const {
         return y;
-    }
-
-    ~Coordinates() {
-        cout << "deleting coordinates" << endl;
     }
 };
 

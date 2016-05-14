@@ -6,7 +6,6 @@
 #define PISKVORKY_INPUTREADER_H
 
 #include "Coordinates.h"
-#include <string>
 
 using namespace std;
 

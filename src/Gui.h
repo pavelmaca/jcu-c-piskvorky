@@ -6,7 +6,6 @@
 #define PISKVORKY_GUI_H
 
 #include "Engine.h"
-#include "InputReader.h"
 
 class Gui {
 private:

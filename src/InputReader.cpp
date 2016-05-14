@@ -3,6 +3,7 @@
 //
 
 #include "InputReader.h"
+#include <string>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ unsigned int InputReader::readUnsignedInteger() {
     try {
         string txt;
         getline(cin, txt);
-        unsigned int number = (unsigned int) std::stoi(txt);
+        int number = (int) std::stoi(txt);
         if (number < 0) {
             cout << "Cislo musi byt klande, zkuste znovu:";
             return readUnsignedInteger();

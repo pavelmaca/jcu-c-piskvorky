@@ -20,13 +20,13 @@ Storage::Storage(int size) {
 
 Storage::~Storage() {
     cout << "Storage destructor called" << endl;
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
-            delete fields[i][j];
-        }
-        delete fields[i];
+	for (int x = 0; x < size; ++x) {
+		/*for (int y = 0; y < size; ++y) {
+            delete fields[x][y];
+        }*/
+        delete[] fields[x];
     }
-    delete fields;
+    delete[] fields;
 }
 
 bool Storage::isEmpty(int x, int y) {

@@ -3,18 +3,22 @@
 //
 
 #include "CoordinatesBlock.h"
+#include "Tools.h"
 
 CoordinatesBlock::CoordinatesBlock(int size) {
     pCoordinates = new Coordinates *[size];
     this->size = size;
+	this->i = 0;
+	this->value = 0;
 }
 
 CoordinatesBlock::~CoordinatesBlock() {
-    for (int j = 0; j < i; ++j) {
-        delete pCoordinates[i];
+	Tools::delete2DArray((Object***)&pCoordinates, i);
+   /* for (int j = 0; j < i; ++j) {
+        delete pCoordinates[j];
     }
 
-    delete pCoordinates;
+    delete[] pCoordinates;*/
 }
 
 void CoordinatesBlock::add(int x, int y) {

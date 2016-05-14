@@ -7,10 +7,10 @@
 
 #include "Coordinates.h"
 
-class CoordinatesBlock {
+class CoordinatesBlock : public Object {
 private:
     Coordinates **pCoordinates;
-    int i = 0;
+    int i;
     int size;
 public:
     int value;

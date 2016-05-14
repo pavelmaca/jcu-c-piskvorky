@@ -3,6 +3,7 @@
 //
 
 #include "Gui.h"
+#include "InputReader.h"
 
 using namespace std;
 
@@ -46,7 +47,7 @@ void Gui::makePlayerMove() {
     delete coordinates;
     if (!result) {
         cout << "Neplatný tah, zkuste znovu." << endl;
-        makePlayerMove();
+        return makePlayerMove();
     }
 }
 
@@ -59,9 +60,19 @@ void Gui::printEndGame() {
         cout << winner->getName() << " zvítězil." << endl;
     }
 
-    cout << "KONEC HRY" << endl;
 
-    //engine restart
+	cout << "Chcete hrát znovu? (A/n)" << endl;
+	string restart;
+	getline(cin, restart);
+
+	if(restart == "A" || restart == "a")
+	{
+		engine->restart();
+		this->run();
+	}else
+	{
+		cout << "KONEC HRY" << endl;
+	}
 }
 
 
@@ -104,17 +115,15 @@ void Gui::runTest() {
     printStatus();
     printEndGame();
 
-    engine->restart();
-    run();
+   // engine->restart();
+    //run();
 }
 
 void Gui::run() {
     printStatus();
 
     while (!engine->isGameOver()) {
-        system("clear");
-
-        makePlayerMove();
+		makePlayerMove();
         printStatus();
     }
 
@@ -123,6 +132,6 @@ void Gui::run() {
 
 Gui::~Gui() {
     cout << "destructing gui" << endl;
-    delete (engine);
+    delete engine;
 }
 

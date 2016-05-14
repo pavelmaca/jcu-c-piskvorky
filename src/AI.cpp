@@ -6,6 +6,7 @@
 #include "AI.h"
 #include "WinException.h"
 #include <ctime>
+#include "Tools.h"
 
 
 /** našte např. všechny pětice (pokud hraji na 5) */
@@ -107,6 +108,7 @@ void AI::countValueOfBlock(CoordinatesBlock *block) {
                 ownerOfBlock = actualOwner;
             else if (ownerOfBlock != actualOwner) {
                 block->value = 0;
+				delete[] layout;
                 return;
             }
 
@@ -130,6 +132,7 @@ void AI::countValueOfBlock(CoordinatesBlock *block) {
     }
 
     block->value = points + 1;
+
     delete[] layout;
 }
 
@@ -186,7 +189,7 @@ Coordinates *AI::findBestCoordinates() {
             if (debug) cout << val << "|";
             if (val > max) {
                 max = val;
-                //delete maxCoordinates;
+				Tools::delete2DArrayItems((Object**) maxCoordinates, maxCount);
                 maxCount = 0;
                 maxCoordinates[maxCount++] = new Coordinates(x, y);
             } else if (val == max && maxCount < maxCountLimit) {
@@ -200,15 +203,18 @@ Coordinates *AI::findBestCoordinates() {
     int random = (time(0) + rand()) % maxCount;
 
     Coordinates *result = new Coordinates(maxCoordinates[random]->getX(), maxCoordinates[random]->getY());
-    delete[] maxCoordinates;
+
+	Tools::delete2DArray((Object***) &maxCoordinates, maxCount);
     return result;
 }
 
 AI::~AI() {
     cout << "Call AI destructor" << endl;
 
+	//Tools::delete2DArray((Object***)&blocks, blocksNumber);
     for (int i = 0; i < blocksNumber; ++i) {
-        delete[] blocks[i];
+        delete blocks[i];
     }
-}
 
+    delete[] blocks;
+}

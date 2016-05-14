@@ -8,7 +8,6 @@
 
 #include "Storage.h"
 #include "CoordinatesBlock.h"
-#include <random>
 
 class AI {
     int winningSize;
@@ -17,7 +16,6 @@ class AI {
     int blocksNumber = 0;
     CoordinatesBlock **blocks;
 
-    /** našte např. všechny pětice (pokud hraji na 5) */
     void generateBlocks();
 
     int getValueOnCoordinates(int x, int y);

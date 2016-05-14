@@ -1,10 +1,18 @@
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include "src/Gui.h"
-#include <iostream>
 
 int main() {
-    Gui gui;
-    gui.runTest();
-    //gui.run();
+	system("PAUSE");
+	Gui *gui = new Gui();
+	
+    //gui->runTest();
+    gui->run();
 
+	delete gui;
+
+	_CrtDumpMemoryLeaks();
 	system("PAUSE");
 }

@@ -7,7 +7,6 @@
 
 #include <string>
 #include <iostream>
-#include <iostream>
 #include "Player.h"
 #include "Storage.h"
 #include "AI.h"
@@ -61,9 +60,9 @@ public:
         cout << "destructing engine" << endl;
         delete humanPlayer;
         delete botPlayer;
-        delete isOnMove;
+        //delete isOnMove;
         delete ai;
-        storage->~Storage();
+		delete storage;
     }
 
     void restart() {
