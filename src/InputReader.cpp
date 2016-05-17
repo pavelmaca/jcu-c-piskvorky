@@ -40,7 +40,7 @@ Coordinates *InputReader::readCoordinates(int size) {
         getline(cin, txt);
 
         int xInt = (int) txt[0];
-        int yInt = stoi(txt.substr(1, 1));;
+        int yInt = stoi(txt.substr(1, 2));
 
         if (xInt < 65 || (xInt >= 65 + size && xInt < 97) || xInt >= 97 + size || txt.length() < 2 ||
             yInt >= size || yInt < 0) {
