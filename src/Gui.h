@@ -28,6 +28,8 @@ public:
     void run();
 
     ~Gui();
+
+    void saveScore(string file);
 };
 
 

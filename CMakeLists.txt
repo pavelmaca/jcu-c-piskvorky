@@ -12,5 +12,8 @@ set(SOURCE_FILES main.cpp
         src/AI.h  src/AI.cpp
         src/Coordinates.h
         src/CoordinatesBlock.cpp src/CoordinatesBlock.h
-        src/WinException.h)
+        src/WinException.h
+        src/Object.h
+        src/Tools.h
+        src/ScoreWriter.cpp src/ScoreWriter.h)
 add_executable(Piskvorky ${SOURCE_FILES})

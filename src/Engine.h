@@ -76,6 +76,7 @@ public:
         makeMoveAsBotPlayer();
     }
 
+    /* return true on valid move */
     bool makeMove(int x, int y) {
         if (!gameOver && storage->isEmpty(x, y)) {
             storage->put(x, y, isOnMove);
@@ -88,6 +89,10 @@ public:
 
             if (!gameOver) {
                 switchPlayers();
+            }
+
+            if(gameOver && isOnMove != NULL){
+                isOnMove->addVictory();
             }
 
             return true;
@@ -103,13 +108,21 @@ public:
         return storage->get(x, y);
     }
 
-
     bool isGameOver() const {
         return gameOver;
     }
 
     Player *getWinner() const {
         return isOnMove;
+    }
+
+
+    Player *getBotPlayer() const {
+        return botPlayer;
+    }
+
+    Player *getHumanPlayer() const {
+        return humanPlayer;
     }
 };
 

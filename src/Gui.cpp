@@ -4,6 +4,7 @@
 
 #include "Gui.h"
 #include "InputReader.h"
+#include "ScoreWriter.h"
 
 using namespace std;
 
@@ -11,8 +12,8 @@ using namespace std;
 void Gui::printStatus() {
     // clean console output
     // source: http://stackoverflow.com/a/6487534
-    cout << "\x1B[2J\x1B[H";
-    system("clr");
+    //cout << "\x1B[2J\x1B[H";
+    //system("clr");
 
     int size = engine->getStorageSize();
     printHeader(size);
@@ -57,11 +58,11 @@ void Gui::printEndGame() {
     if (winner == NULL) {
         cout << "Remíza" << endl;
     } else {
-        cout << winner->getName() << " zvítězil." << endl;
+        cout << winner->getName() << " zvitezil." << endl;
     }
 
 
-	cout << "Chcete hrát znovu? (A/n)" << endl;
+	cout << "Chcete hrat znovu? (A/n)" << endl;
 	string restart;
 	getline(cin, restart);
 
@@ -77,46 +78,38 @@ void Gui::printEndGame() {
 
 
 Gui::Gui() {
-    setlocale(LC_ALL, "cs_CZ.UTF-8");
-
     int winningSize;
-    cout << "Výherní počet: ";
+
+	cout << "Vitej ve hry piskvorky," << endl
+		<< "Prvni vyberte nastaveni hry." << endl << endl;
+
+    cout << "Vyherni pocet: ";
     winningSize = InputReader::readUnsignedInteger();
     cout << endl;
 
     int size;
-    cout << "Velikost hrací plochy: ";
+    cout << "Velikost hraci plochy: ";
     size = InputReader::readUnsignedInteger();
     cout << endl;
 
     string playerName;
-    cout << "Jméno hráče: ";
+    cout << "Jmeno hrace: ";
     playerName = InputReader::readString();
     cout << endl;
+
+	cout << "Vas znak je: x" << endl
+		<< "Souradnice zadavejte ve tvaru: a5" << endl << endl;
 
     engine = new Engine(playerName, size, winningSize);
 }
 
 void Gui::runTest() {
-    // http://stackoverflow.com/a/7560564
-    /*  std::random_device rd; // obtain a random number from hardware
-      std::mt19937 eng(rd()); // seed the generator
-      std::uniform_int_distribution<> distr(0, engine->getStorageSize() - 1); // define the range
-
-      int x = distr(eng);
-      int y = distr(eng);
-      cout << "souradnice: " << x << ":" << y << endl;
-    */
-
     while (!engine->isGameOver()) {
         engine->testBot2Move();
     }
 
     printStatus();
     printEndGame();
-
-   // engine->restart();
-    //run();
 }
 
 void Gui::run() {
@@ -134,4 +127,11 @@ Gui::~Gui() {
     cout << "destructing gui" << endl;
     delete engine;
 }
+
+void Gui::saveScore(string file) {
+    ScoreWriter scoreWriter(file);
+    scoreWriter.saveScore(engine->getHumanPlayer(), engine->getBotPlayer());
+}
+
+
 

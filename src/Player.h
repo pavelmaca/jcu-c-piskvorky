@@ -13,6 +13,7 @@ class Player {
 private:
     string name;
     char symbol;
+    unsigned int score = 0;
 
 public:
 
@@ -29,6 +30,14 @@ public:
 
     char getSymbol() const {
         return symbol;
+    }
+
+    void addVictory(){
+        score++;
+    }
+
+    unsigned int getScore() const {
+        return score;
     }
 };
 

@@ -171,7 +171,7 @@ bool AI::checkVictory() {
 }
 
 Coordinates *AI::findBestCoordinates() {
-    bool debug = true;
+    bool debug = false;
 
     int max = -1;
     int maxCount = -1;
