@@ -19,11 +19,6 @@ public:
 
     Player(const string &name, char symbol) : name(name), symbol(symbol) { }
 
-    virtual ~Player() {
-        cout << "Player destructor called" << endl;
-    }
-
-
     string getName() const {
         return name;
     }

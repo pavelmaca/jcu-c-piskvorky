@@ -4,7 +4,7 @@ project(Piskvorky)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES main.cpp
-        src/Engine.h
+        src/Engine.h src/Engine.cpp
         src/Player.h
         src/Gui.h src/Gui.cpp
         src/Storage.h src/Storage.cpp

@@ -149,18 +149,6 @@ AI::AI(int winningSize, Storage *storage) {
     generateBlocks();
 }
 
-Coordinates *AI::findDumCoordinates() {
-    for (int x = 0; x < storage->getSize(); ++x) {
-        for (int y = 0; y < storage->getSize(); ++y) {
-            if (storage->isEmpty(x, y)) {
-                return new Coordinates(x, y);
-            }
-        }
-    }
-
-    return NULL;
-}
-
 bool AI::checkVictory() {
     try {
         updateBlockValues();
@@ -171,22 +159,17 @@ bool AI::checkVictory() {
 }
 
 Coordinates *AI::findBestCoordinates() {
-    bool debug = false;
-
     int max = -1;
     int maxCount = -1;
     int maxCountLimit = 100;
     Coordinates **maxCoordinates = new Coordinates *[maxCountLimit];
-    if (debug) cout << "hodnoty:" << endl;
     for (int y = 0; y < storage->getSize(); ++y) {
         for (int x = 0; x < storage->getSize(); ++x) {
             if (!storage->isEmpty(x, y)) {
-                if (debug) cout << " |";
                 continue;
             }
 
             int val = getValueOnCoordinates(x, y);
-            if (debug) cout << val << "|";
             if (val > max) {
                 max = val;
 				Tools::delete2DArrayItems((Object**) maxCoordinates, maxCount);
@@ -196,9 +179,7 @@ Coordinates *AI::findBestCoordinates() {
                 maxCoordinates[maxCount++] = new Coordinates(x, y);
             }
         }
-        if (debug) cout << endl;
     }
-    if (debug) cout << endl;
 
     int random = (time(0) + rand()) % maxCount;
 
@@ -209,9 +190,6 @@ Coordinates *AI::findBestCoordinates() {
 }
 
 AI::~AI() {
-    cout << "Call AI destructor" << endl;
-
-	//Tools::delete2DArray((Object***)&blocks, blocksNumber);
     for (int i = 0; i < blocksNumber; ++i) {
         delete blocks[i];
     }

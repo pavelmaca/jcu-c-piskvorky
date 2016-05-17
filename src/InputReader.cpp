@@ -50,7 +50,6 @@ Coordinates *InputReader::readCoordinates(int size) {
 
         int x = xInt >= 97 ? xInt - 97 : xInt - 65;
         int y = yInt;
-        //cout << "souradnice: " << x << ":" << y << endl;
         return new Coordinates(x, y);
     } catch (...) {
         cout << "Nesprvavne souradnice, zkuste znovu:";

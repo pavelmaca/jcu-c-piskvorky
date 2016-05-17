@@ -19,11 +19,7 @@ Storage::Storage(int size) {
 }
 
 Storage::~Storage() {
-    cout << "Storage destructor called" << endl;
 	for (int x = 0; x < size; ++x) {
-		/*for (int y = 0; y < size; ++y) {
-            delete fields[x][y];
-        }*/
         delete[] fields[x];
     }
     delete[] fields;

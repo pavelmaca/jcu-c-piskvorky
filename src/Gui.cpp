@@ -134,7 +134,6 @@ void Gui::run() {
 }
 
 Gui::~Gui() {
-    cout << "destructing gui" << endl;
     delete engine;
 }
 

@@ -28,8 +28,6 @@ class AI {
 public:
     AI(int winningSize, Storage *storage);
 
-    Coordinates *findDumCoordinates();
-
     bool checkVictory();
 
     Coordinates *findBestCoordinates();

@@ -14,11 +14,6 @@ CoordinatesBlock::CoordinatesBlock(int size) {
 
 CoordinatesBlock::~CoordinatesBlock() {
 	Tools::delete2DArray((Object***)&pCoordinates, i);
-   /* for (int j = 0; j < i; ++j) {
-        delete pCoordinates[j];
-    }
-
-    delete[] pCoordinates;*/
 }
 
 void CoordinatesBlock::add(int x, int y) {

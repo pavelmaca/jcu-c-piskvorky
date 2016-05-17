@@ -5,8 +5,6 @@
 #ifndef PISKVORKY_ENGINE_H
 #define PISKVORKY_ENGINE_H
 
-#include <string>
-#include <iostream>
 #include "Player.h"
 #include "Storage.h"
 #include "AI.h"
@@ -25,88 +23,25 @@ private:
 
     bool gameOver = false;
 
-    void switchPlayers() {
-        if (isOnMove == humanPlayer) {
-            isOnMove = botPlayer;
-            makeMoveAsBotPlayer();
-        } else {
-            isOnMove = humanPlayer;
-        }
-    }
+    void switchPlayers();
 
-    void makeMoveAsBotPlayer() {
-        Coordinates *coordinates = ai->findBestCoordinates();
-
-        cout << isOnMove->getName() << " tah: " << static_cast<char>('a' + coordinates->getX()) <<
-        coordinates->getY() << endl;
-        makeMove(coordinates->getX(), coordinates->getY());
-
-        delete coordinates;
-    }
+    void makeMoveAsBotPlayer();
 
 public:
-    Engine(string humanPlayerName, int size, int winningSize) {
-        this->botPlayer = new Player("PC", 'o');
+    Engine(string humanPlayerName, int size, int winningSize);
 
-        this->humanPlayer = new Player(humanPlayerName, 'x');
-        this->isOnMove = this->humanPlayer;
+    ~Engine();
 
-        this->storage = new Storage(size);
+    void restart();
 
-        this->ai = new AI(winningSize, storage);
-    }
-
-    ~Engine() {
-        cout << "destructing engine" << endl;
-        delete humanPlayer;
-        delete botPlayer;
-        //delete isOnMove;
-        delete ai;
-		delete storage;
-    }
-
-    void restart() {
-        this->isOnMove = this->humanPlayer;
-        this->storage->clean();
-        gameOver = false;
-    }
-
-    void testBot2Move() {
-        ai->checkVictory();
-        makeMoveAsBotPlayer();
-    }
+    void testBot2Move();
 
     /* return true on valid move */
-    bool makeMove(int x, int y) {
-        if (!gameOver && storage->isEmpty(x, y)) {
-            storage->put(x, y, isOnMove);
-            gameOver = ai->checkVictory();
+    bool makeMove(int x, int y);
 
-            if (storage->isFull()) {
-                isOnMove = NULL;
-                gameOver = true;
-            }
+    int getStorageSize() const;
 
-            if (!gameOver) {
-                switchPlayers();
-            }
-
-            if(gameOver && isOnMove != NULL){
-                isOnMove->addVictory();
-            }
-
-            return true;
-        }
-        return false;
-    }
-
-    int getStorageSize() const {
-        return storage->getSize();
-    }
-
-    Player *getStatus(int x, int y) {
-        return storage->get(x, y);
-    }
+    Player *getStatus(int x, int y);
 
     bool isGameOver() const {
         return gameOver;
