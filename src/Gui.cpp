@@ -62,43 +62,53 @@ void Gui::printEndGame() {
     }
 
 
-	cout << "Chcete hrat znovu? (A/n)" << endl;
-	string restart;
-	getline(cin, restart);
+    cout << "Chcete hrat znovu? (A/n)" << endl;
+    string restart;
+    getline(cin, restart);
 
-	if(restart == "A" || restart == "a")
-	{
-		engine->restart();
-		this->run();
-	}else
-	{
-		cout << "KONEC HRY" << endl;
-	}
+    if (restart == "A" || restart == "a") {
+        engine->restart();
+        this->run();
+    } else {
+        cout << "KONEC HRY" << endl;
+    }
 }
 
 
 Gui::Gui() {
     int winningSize;
 
-	cout << "Vitej ve hry piskvorky," << endl
-		<< "Prvni vyberte nastaveni hry." << endl << endl;
+    cout << "Vitej ve hry piskvorky," << endl
+    << "Prvni vyberte nastaveni hry." << endl << endl;
 
     cout << "Vyherni pocet: ";
     winningSize = InputReader::readUnsignedInteger();
     cout << endl;
 
-    int size;
-    cout << "Velikost hraci plochy: ";
-    size = InputReader::readUnsignedInteger();
-    cout << endl;
+    int size = 0;
+    bool validSize = false;
+    int minimumSize = winningSize + 2;
+    while (!validSize) {
+        cout << "Velikost hraci plochy: ";
+        size = InputReader::readUnsignedInteger();
+        cout << endl;
+
+        if (size >= minimumSize) {
+            validSize = true;
+        } else {
+            cout << "Velikost hraci plochy musi byt alespon " << minimumSize << endl
+            << "Zkuste to znovu." << endl;
+        }
+    }
+
 
     string playerName;
     cout << "Jmeno hrace: ";
     playerName = InputReader::readString();
     cout << endl;
 
-	cout << "Vas znak je: x" << endl
-		<< "Souradnice zadavejte ve tvaru: a5" << endl << endl;
+    cout << "Vas znak je: x" << endl
+    << "Souradnice zadavejte ve tvaru: a5" << endl << endl;
 
     engine = new Engine(playerName, size, winningSize);
 }
@@ -116,7 +126,7 @@ void Gui::run() {
     printStatus();
 
     while (!engine->isGameOver()) {
-		makePlayerMove();
+        makePlayerMove();
         printStatus();
     }
 
