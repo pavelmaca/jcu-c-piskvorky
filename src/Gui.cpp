@@ -76,14 +76,27 @@ void Gui::printEndGame() {
 
 
 Gui::Gui() {
-    int winningSize;
+
+    int maxSize = 26;
 
     cout << "Vitej ve hry piskvorky," << endl
     << "Prvni vyberte nastaveni hry." << endl << endl;
 
-    cout << "Vyherni pocet: ";
-    winningSize = InputReader::readUnsignedInteger();
-    cout << endl;
+    int winningSize;
+    bool validWinningSize = false;
+    while (!validWinningSize) {
+        cout << "Vyherni pocet: ";
+        winningSize = InputReader::readUnsignedInteger();
+        cout << endl;
+
+        if (winningSize > 0 && winningSize <= maxSize - 2) {
+            validWinningSize = true;
+        } else {
+            cout << "Vyherni pocet musi byt v rozmezi 1-" << (maxSize - 2) << endl
+            << "Zkuste to znovu." << endl;
+        }
+    }
+
 
     int size = 0;
     bool validSize = false;
@@ -93,10 +106,10 @@ Gui::Gui() {
         size = InputReader::readUnsignedInteger();
         cout << endl;
 
-        if (size >= minimumSize) {
+        if (size >= minimumSize && maxSize >= size) {
             validSize = true;
         } else {
-            cout << "Velikost hraci plochy musi byt alespon " << minimumSize << endl
+            cout << "Velikost hraci plochy musi byt " << minimumSize << "-" << maxSize << endl
             << "Zkuste to znovu." << endl;
         }
     }
