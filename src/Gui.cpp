@@ -19,11 +19,10 @@ void Gui::printStatus() {
     printHeader(size);
 
     for (int y = 0; y < size; ++y) {
-        int x = 0;
         cout << " " << (y <= 9 ? " " : "") << y;
-        for (; x < size; x++) {
+        for (int x = 0; x < size; ++x) {
             Player *field = engine->getStatus(x, y);
-            char symbol = field == NULL ? ' ' : field->getSymbol();
+            char symbol = (field == NULL ? ' ' : field->getSymbol());
             cout << '|' << symbol;
         }
         cout << '|' << endl;
